@@ -1,21 +1,21 @@
 package ru.gerasimov.se.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "app_chat_room")
 public class ChatRoom {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(unique=true, nullable=false)
+    private Long id;
 
-    @Column(length = 40, name = "room_name", nullable=false)
+    @Column(length = 40, name = "room_name", unique=true, nullable=false)
     private String roomName;
 
     @ManyToMany(fetch = FetchType.LAZY)

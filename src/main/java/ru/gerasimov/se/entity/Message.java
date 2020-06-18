@@ -1,19 +1,19 @@
 package ru.gerasimov.se.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "app_message")
 public class Message {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(unique=true, nullable=false)
+    private Long id;
 
     @Column(name = "creation_date", nullable=false)
     private LocalDateTime creationDate;

@@ -9,10 +9,9 @@ public class App {
 
     public static void main(String[] args) {
         final EntityManager entityManager = Persistence.createEntityManagerFactory("TEST").createEntityManager();
-        entityManager.close();
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext("ru.gerasimov.se");
         final MyProducer myProducer = context.getBean(MyProducer.class);
-        myProducer.start();
+        myProducer.start(entityManager);
     }
 }
