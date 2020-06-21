@@ -1,20 +1,21 @@
 package ru.gerasimov.se.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import ru.gerasimov.se.enums.Role;
 
 import javax.persistence.*;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
-@Data
+@NoArgsConstructor
+//@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "app_user")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(unique=true, nullable=false)
-    private Long id;
+public class User extends AbstractEntity {
 
     @Column(length = 40, unique=true, nullable=false)
     private String login;

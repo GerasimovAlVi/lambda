@@ -1,19 +1,18 @@
 package ru.gerasimov.se.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Entity
-@Data
+@NoArgsConstructor
 @Table(name = "app_message")
-public class Message {
-
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(unique=true, nullable=false)
-    private Long id;
+public class Message extends AbstractEntity {
 
     @Column(name = "creation_date", nullable=false)
     private LocalDateTime creationDate;

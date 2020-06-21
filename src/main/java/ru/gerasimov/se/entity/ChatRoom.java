@@ -1,19 +1,18 @@
 package ru.gerasimov.se.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
-@Data
+@NoArgsConstructor
 @Table(name = "app_chat_room")
-public class ChatRoom {
-
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(unique=true, nullable=false)
-    private Long id;
+public class ChatRoom extends AbstractEntity {
 
     @Column(length = 40, name = "room_name", unique=true, nullable=false)
     private String roomName;

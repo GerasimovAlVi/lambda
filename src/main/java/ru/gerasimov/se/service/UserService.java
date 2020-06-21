@@ -19,16 +19,19 @@ public class UserService implements IUserService {
 
     @Override
     public User saveUser(EntityManager em, String login) {
-        em.getTransaction().begin();
-        User user = findUser(em, login);
-        if(user != null){
+        try {
+            em.getTransaction().begin();
+            User user = findUser(em, login);
+            if(user != null){
+                return user;
+            }
+            user = new User();
+            user.setLogin(login);
+            iUserRepository.saveUser(em, user);
             return user;
+        }finally {
+            em.getTransaction().commit();
         }
-        user = new User();
-        user.setLogin(login);
-        iUserRepository.saveUser(em, user);
-        em.getTransaction().commit();
-        return user;
     }
 
     private User findUser(EntityManager em, String login){
