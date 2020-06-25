@@ -1,8 +1,5 @@
 package ru.gerasimov.se;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -12,7 +9,6 @@ import java.util.concurrent.Executors;
 
 public class AppServerClient {
 
-    private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence.createEntityManagerFactory("TEST");
     private static final List<ServerClient> SERVER_CLIENT_LIST = new ArrayList<>();
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1);
 
@@ -29,10 +25,6 @@ public class AppServerClient {
         }catch(Exception e){
             e.printStackTrace();
         }
-    }
-
-    public static EntityManager getEntityManager(){
-        return ENTITY_MANAGER_FACTORY.createEntityManager();
     }
 
     public static ExecutorService getExecutorService(){

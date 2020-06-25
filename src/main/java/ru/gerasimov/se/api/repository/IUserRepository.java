@@ -1,14 +1,11 @@
 package ru.gerasimov.se.api.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import ru.gerasimov.se.entity.User;
 
-import javax.persistence.EntityManager;
+@Repository
+public interface IUserRepository extends JpaRepository<User, Long> {
 
-public interface IUserRepository {
-
-    void saveUser(EntityManager em, User user);
-
-    User findUser(EntityManager em, String login);
-
-    void makeUserAnAdmin(EntityManager em, User user);
+    User findByLogin(String login);
 }

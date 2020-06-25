@@ -3,12 +3,11 @@ package ru.gerasimov.se.service;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.gerasimov.se.api.repository.IUserRepository;
 import ru.gerasimov.se.api.service.IUserService;
 import ru.gerasimov.se.entity.User;
 import ru.gerasimov.se.enums.Role;
-
-import javax.persistence.EntityManager;
 
 @Data
 @Service
@@ -18,31 +17,26 @@ public class UserService implements IUserService {
     private IUserRepository iUserRepository;
 
     @Override
-    public User saveUser(EntityManager em, String login) {
-        try {
-            em.getTransaction().begin();
-            User user = findUser(em, login);
-            if(user != null){
-                return user;
-            }
-            user = new User();
-            user.setLogin(login);
-            iUserRepository.saveUser(em, user);
+    @Transactional
+    public User saveUser(String login) {
+        User user = findUser(login);
+        if(user != null){
             return user;
-        }finally {
-            em.getTransaction().commit();
         }
+        user = new User();
+        user.setLogin(login);
+        iUserRepository.save(user);
+        return user;
     }
 
-    private User findUser(EntityManager em, String login){
-        return iUserRepository.findUser(em, login);
+    private User findUser(String login){
+        return iUserRepository.findByLogin(login);
     }
 
     @Override
-    public void makeUserAnAdmin(EntityManager em, User user){
-        em.getTransaction().begin();
+    @Transactional
+    public void makeUserAnAdmin(User user){
         user.setRole(Role.ADMIN);
-        iUserRepository.makeUserAnAdmin(em, user);
-        em.getTransaction().commit();
+        iUserRepository.save(user);
     }
 }
