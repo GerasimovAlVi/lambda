@@ -5,6 +5,4 @@ import ru.gerasimov.se.entity.User;
 public interface IUserService {
 
     User saveUser(String login);
-
-    void makeUserAnAdmin(User user);
 }
