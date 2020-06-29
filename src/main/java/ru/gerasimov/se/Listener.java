@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.function.Consumer;
 
 @Component
 public class Listener implements Runnable {
@@ -17,12 +18,13 @@ public class Listener implements Runnable {
 
     @Override
     public void run() {
+        Consumer<String> soutConsumer = System.out::println;
         try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()))){
             while(true){
-                System.out.println(bufferedReader.readLine());
+                soutConsumer.accept(bufferedReader.readLine());
             }
         }catch(Exception e){
-            System.out.println("Вы вышли из чата!");
+            soutConsumer.accept("Вы вышли из чата!");
         }
     }
 }

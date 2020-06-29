@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 public class AppServerClient {
 
@@ -13,12 +14,13 @@ public class AppServerClient {
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1);
 
     public static void main(String[] args) {
+        Consumer<String> soutConsumer = System.out::println;
         try(ServerSocket serverSocket = new ServerSocket(4888)){
-            System.out.println("Сервер стартовал!");
+            soutConsumer.accept("Сервер стартовал!");
 
             while(true){
                 Socket socket = serverSocket.accept();
-                System.out.println("Новый участник присоединился к чату!");
+                soutConsumer.accept("Новый участник присоединился к чату!");
                 ServerClient serverClient = new ServerClient(socket);
                 serverClientList().add(serverClient);
             }

@@ -13,6 +13,7 @@ import ru.gerasimov.se.enums.RoleType;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
+import java.util.Optional;
 
 @Data
 @Service
@@ -27,13 +28,13 @@ public class UserService implements IUserService {
     @Transactional
     public User saveUser(String login) {
         User user = findUser(login);
-        if(user != null){
-            return user;
-        }
-        user = new User();
-        user.setLogin(login);
-        iUserRepository.save(user);
-        return user;
+        Optional<User> userOptional = Optional.ofNullable(user);
+        return userOptional.orElseGet(() -> {
+            User newUser = new User();
+            newUser.setLogin(login);
+            iUserRepository.save(newUser);
+            return newUser;
+        });
     }
 
     private User findUser(String login){
@@ -48,14 +49,15 @@ public class UserService implements IUserService {
 
     @Transactional
     public void initUser(String login, String password, RoleType roleType){
-        User user = iUserRepository.findByLogin(login);
-        if(user != null) return;
-        user = new User();
-        user.setLogin(login);
-        user.setPass(passwordEncoder.encode(password));
-        Role role = new Role();
-        role.setName(roleType.name());
-        user.setRoles(Collections.singleton(role));
-        iUserRepository.save(user);
+        Optional<User> userOptional = Optional.ofNullable(iUserRepository.findByLogin(login));
+        if(!userOptional.isPresent()){
+            User user = new User();
+            user.setLogin(login);
+            user.setPass(passwordEncoder.encode(password));
+            Role role = new Role();
+            role.setName(roleType.name());
+            user.setRoles(Collections.singleton(role));
+            iUserRepository.save(user);
+        }
     }
 }

@@ -23,7 +23,7 @@ public class User extends AbstractEntity implements Serializable, UserDetails {
     @Column(length = 40, unique=true, nullable=false)
     private String login;
 
-    @Column(nullable=false)
+    @Column
     private String pass;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

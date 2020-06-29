@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import ru.gerasimov.se.api.repository.IUserRepository;
 import ru.gerasimov.se.entity.User;
 
+import java.util.Optional;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -17,10 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         User user = iUserRepository.findByLogin(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("login not found");
-        }
-
-        return user;
+        Optional<User> userOptional = Optional.ofNullable(user);
+        return userOptional.orElseThrow(() -> new UsernameNotFoundException("login not found"));
     }
 }

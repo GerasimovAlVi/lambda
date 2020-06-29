@@ -2,6 +2,7 @@ package ru.gerasimov.se;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.function.Consumer;
 
 public class ServerClient implements Runnable {
 
@@ -16,6 +17,7 @@ public class ServerClient implements Runnable {
         new Thread(this).start();
     }
     public void run(){
+        Consumer<String> soutConsumer = System.out::println;
         String message;
         try{
             while (true) {
@@ -23,7 +25,7 @@ public class ServerClient implements Runnable {
                 if(message.equals("exit")){
                     throw new Exception();
                 }
-                System.out.println("Сообщение от " + message);
+                soutConsumer.accept("Сообщение от " + message);
                 for (ServerClient i : AppServerClient.serverClientList()) {
                     i.bufferedWriter.write(message + "\n");
                     i.bufferedWriter.flush();
@@ -31,7 +33,7 @@ public class ServerClient implements Runnable {
             }
         }catch(Exception e){
             AppServerClient.serverClientList().remove(this);
-            System.out.println("Участник покинул чат!");
+            soutConsumer.accept("Участник покинул чат!");
             try {
                 bufferedReader.close();
                 bufferedWriter.close();
